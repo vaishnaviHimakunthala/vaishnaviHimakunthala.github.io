@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Form submissions are delivered by formsubmit.co — free, no account needed.
+// The first submission triggers a one-time activation email to this address.
+const formEndpoint = 'https://formsubmit.co/ajax/vaishnavi.himakunthala@gmail.com';
+---
+
+<Base
+  title="Contact · Vaishnavi Himakunthala"
+  description="Get in touch with Vaishnavi Himakunthala"
+>
+  <h1>Contact</h1>
+  <p class="muted">
+    Have a question, an idea, or just want to say hi? Send me a message and
+    it'll land straight in my inbox.
+  </p>
+
+  <form id="contact-form" class="contact-form" novalidate>
+    <label>
+      Name
+      <input type="text" name="name" required autocomplete="name" />
+    </label>
+    <label>
+      Email
+      <input type="email" name="email" required autocomplete="email" />
+    </label>
+    <label>
+      Message
+      <textarea name="message" rows="6" required></textarea>
+    </label>
+    <!-- honeypot field: hidden from humans, catches spam bots -->
+    <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="honey" />
+    <input type="hidden" name="_subject" value="New message from your website" />
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_template" value="table" />
+    <button type="submit">Send message</button>
+    <p id="form-status" role="status" aria-live="polite"></p>
+  </form>
+
+  <p class="muted" style="margin-top:2rem;">
+    Prefer email? Reach me directly at
+    <a href="mailto:vaishnavi.himakunthala@gmail.com">vaishnavi.himakunthala@gmail.com</a>.
+  </p>
+</Base>
+
+<script define:vars={{ formEndpoint }}>
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('form-status');
+  const button = form.querySelector('button');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!form.reportValidity()) return;
+
+    button.disabled = true;
+    status.textContent = 'Sending…';
+    status.className = '';
+
+    try {
+      const response = await fetch(formEndpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      form.reset();
+      status.textContent = "Thanks! Your message is on its way — I'll get back to you soon.";
+      status.className = 'success';
+    } catch {
+      status.textContent =
+        'Something went wrong sending your message. Please email me directly instead.';
+      status.className = 'error';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>

@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+
+// TODO: replace these placeholders with your real projects.
+// Each project: title, description, tags, and an optional link (GitHub, demo, etc.)
+const projects = [
+  {
+    title: 'Project One',
+    description:
+      'A short one-or-two sentence description of what this project does and why you built it.',
+    tags: ['Python', 'ML'],
+    link: 'https://github.com/yourusername/project-one',
+  },
+  {
+    title: 'Project Two',
+    description:
+      'Another project description — what problem it solves, what you learned building it.',
+    tags: ['TypeScript', 'Web'],
+    link: 'https://github.com/yourusername/project-two',
+  },
+  {
+    title: 'Project Three',
+    description:
+      'A weekend experiment, a tool you use daily, a class project you are proud of.',
+    tags: ['Swift', 'iOS'],
+    link: null,
+  },
+  {
+    title: 'Project Four',
+    description:
+      'Add as many as you like — the grid grows automatically.',
+    tags: ['Rust', 'CLI'],
+    link: null,
+  },
+];
+---
+
+<Base
+  title="Projects · Vaishnavi Himakunthala"
+  description="Personal projects by Vaishnavi Himakunthala"
+>
+  <h1>Projects</h1>
+  <p class="muted">Things I've built, broken, and rebuilt.</p>
+
+  <ul class="card-grid">
+    {
+      projects.map((project) => (
+        <li class="card">
+          <h3>
+            {project.link ? (
+              <a href={project.link}>{project.title}</a>
+            ) : (
+              project.title
+            )}
+          </h3>
+          <p>{project.description}</p>
+          <div class="tags">
+            {project.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Base>

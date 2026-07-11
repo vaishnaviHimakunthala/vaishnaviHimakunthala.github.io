@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Personal website of Vaishnavi Himakunthala' } =
+  Astro.props;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="inner">
+        <a class="brand" href="/">Vaishnavi Himakunthala</a>
+        <nav>
+          {
+            navLinks.map((link) => (
+              <a
+                href={link.href}
+                aria-current={
+                  currentPath === link.href ||
+                  (link.href !== '/' && currentPath.startsWith(link.href))
+                    ? 'page'
+                    : undefined
+                }
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="inner">
+        <span>© {new Date().getFullYear()} Vaishnavi Himakunthala</span>
+        <span>
+          <!-- TODO: replace with your real profiles -->
+          <a href="https://github.com/yourusername">GitHub</a>
+          ·
+          <a href="https://www.linkedin.com/in/yourusername">LinkedIn</a>
+          ·
+          <a href="mailto:vaishnavi.himakunthala@gmail.com">Email</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

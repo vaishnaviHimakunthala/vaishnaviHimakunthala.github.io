@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+// TODO: edit these to match your real hobbies
+const hobbies = [
+  'Reading',
+  'Cooking',
+  'Hiking',
+  'Photography',
+  'Painting',
+  'Traveling',
+];
+---
+
+<Base title="Vaishnavi Himakunthala">
+  <section class="hero">
+    <p class="hi">Hi, I'm</p>
+    <h1>Vaishnavi Himakunthala</h1>
+    <p class="lede">
+      <!-- TODO: replace with your own intro -->
+      Welcome to my corner of the internet. I build things, explore new ideas,
+      and occasionally write about what I learn along the way.
+    </p>
+    <p>
+      <a href="/projects">See my projects →</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Hobbies</h2>
+    <ul class="chips">
+      {hobbies.map((hobby) => <li>{hobby}</li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Recent writing</h2>
+    {
+      posts.length > 0 ? (
+        <ul class="post-list">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}`}>{post.data.title}</a>
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                  timeZone: 'UTC',
+                })}
+              </time>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">No posts yet — coming soon.</p>
+      )
+    }
+    <p><a href="/blog">All posts →</a></p>
+  </section>
+</Base>
