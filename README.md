@@ -54,9 +54,11 @@ if that matters to you).
 
 ## Deploying
 
-The site is fully static, so any of these work (all have free tiers):
+Live at **https://vaishnavihimakunthala.github.io** via GitHub Pages.
 
-- **Netlify / Vercel** — connect the repo; build command `npm run build`, output `dist/`
-- **GitHub Pages** — see [Astro's guide](https://docs.astro.build/en/guides/deploy/github/)
+Every push to `main` triggers `.github/workflows/deploy.yml`, which builds the
+site and publishes it automatically — no manual steps. Check deploy status
+under the repo's Actions tab.
 
-Once you have a domain, update `site` in `astro.config.mjs`.
+To use a custom domain later, add it in the repo's Settings → Pages and
+update `site` in `astro.config.mjs`.
