@@ -17,6 +17,24 @@ npm run build    # production build to dist/
 - **Social links** — edit the footer in `src/layouts/Base.astro`
 - **Colors & fonts** — tweak the CSS variables at the top of `src/styles/global.css`
 
+## Resume
+
+Drop your resume at `public/resume.pdf` and the Resume page displays it
+automatically (with a download button). Until then it shows a friendly
+"coming soon" note.
+
+## Gallery (crochet & volunteering photos)
+
+Drop image files (jpg/png/webp) into:
+
+- `src/gallery/crochet/`
+- `src/gallery/volunteering/`
+
+The gallery page picks them up automatically. Captions come from filenames:
+`granny-square-blanket.jpg` becomes "Granny square blanket". Delete the
+`replace-me-*.svg` placeholder files once you add real photos. Images are
+optimized at build time, so full-size photos are fine.
+
 ## Writing a blog post
 
 Create a markdown file in `src/blog/`:

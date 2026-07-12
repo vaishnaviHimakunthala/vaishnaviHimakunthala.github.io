@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import fs from 'node:fs';
+
+// Drop your resume at public/resume.pdf and this page picks it up
+// automatically on the next build — no code changes needed.
+const hasResume = fs.existsSync(new URL('../../public/resume.pdf', import.meta.url));
+---
+
+<Base
+  title="Resume · Vaishnavi Himakunthala"
+  description="Resume of Vaishnavi Himakunthala"
+>
+  <h1>Resume</h1>
+
+  {
+    hasResume ? (
+      <>
+        <p class="muted">
+          The full PDF is below — or
+          <a href="/resume.pdf" download>
+            download a copy
+          </a>
+          .
+        </p>
+        <object
+          class="resume-frame"
+          data="/resume.pdf"
+          type="application/pdf"
+          aria-label="Resume PDF"
+        >
+          <p>
+            Your browser can't display PDFs inline —
+            <a href="/resume.pdf" download>
+              download the resume instead
+            </a>
+            .
+          </p>
+        </object>
+      </>
+    ) : (
+      <p class="muted">
+        📄 Coming soon! I'm polishing it up — in the meantime,
+        <a href="/contact">get in touch</a> and I'll send it over.
+      </p>
+    )
+  }
+</Base>

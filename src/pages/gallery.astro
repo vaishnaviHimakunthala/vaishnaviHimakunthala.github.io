@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+// To add photos: drop image files (jpg/png/webp) into src/gallery/crochet/
+// or src/gallery/volunteering/. The caption comes from the filename, e.g.
+// "granny-square-blanket.jpg" → "Granny square blanket".
+const crochet = import.meta.glob<{ default: ImageMetadata }>(
+  '../gallery/crochet/*.{jpg,jpeg,png,webp,gif,svg}',
+  { eager: true }
+);
+const volunteering = import.meta.glob<{ default: ImageMetadata }>(
+  '../gallery/volunteering/*.{jpg,jpeg,png,webp,gif,svg}',
+  { eager: true }
+);
+
+function toEntries(images: Record<string, { default: ImageMetadata }>) {
+  return Object.entries(images)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([path, mod]) => {
+      const filename = path.split('/').pop() ?? '';
+      const name = filename.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
+      const caption = name.charAt(0).toUpperCase() + name.slice(1);
+      return { image: mod.default, caption };
+    });
+}
+
+const sections = [
+  {
+    title: 'Crochet 🧶',
+    intro: 'Yarn, hooks, and the occasional ambitious blanket.',
+    entries: toEntries(crochet),
+  },
+  {
+    title: 'Volunteering 💛',
+    intro: 'Causes and communities I love being part of.',
+    entries: toEntries(volunteering),
+  },
+];
+---
+
+<Base
+  title="Gallery · Vaishnavi Himakunthala"
+  description="Crochet projects and volunteering moments"
+>
+  <h1>Gallery</h1>
+  <p class="muted">A few things I make and do when I'm not at a keyboard.</p>
+
+  {
+    sections.map((section) => (
+      <section>
+        <h2>{section.title}</h2>
+        <p class="muted">{section.intro}</p>
+        {section.entries.length > 0 ? (
+          <ul class="gallery-grid">
+            {section.entries.map(({ image, caption }) => (
+              <li>
+                <figure>
+                  <Image src={image} alt={caption} width={600} />
+                  <figcaption>{caption}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="muted">Photos coming soon!</p>
+        )}
+      </section>
+    ))
+  }
+</Base>
